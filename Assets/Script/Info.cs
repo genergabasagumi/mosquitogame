@@ -5,8 +5,11 @@ public class Info : MonoBehaviour {
 	public int Score;
 	public int Life;
 
-	public Text LifeText;
+	public GameObject[] Heart;
+
+	//public Text LifeText;
 	public Text ScoreText;
+	public Text ScoreEnd;
 	public GameObject EndWindow;
 	public GameObject InGame;
 	public GameObject SpawnPoint;
@@ -28,8 +31,9 @@ public class Info : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Time.timeScale = timeS;
-		LifeText.text = "Life : " + Life.ToString ();
+		//LifeText.text = "Life : " + Life.ToString ();
 		ScoreText.text = "Score : " + Score.ToString ();
+		ScoreEnd.text = "Score : " + Score.ToString ();
 		if(Life < 0)
 		{
 			highScore = PlayerPrefs.GetInt("High Score");
@@ -50,6 +54,17 @@ public class Info : MonoBehaviour {
 			DestroyObject(SpawnPoint);
 			 DestroyAll();
 
+		}
+
+		for(int i = Heart.Length-1; i >= 0;i--)
+		{
+			if(Life == i)
+			{
+				if(Heart[i].activeSelf)
+				{
+					Heart[i].SetActive(false);
+				}
+			}
 		}
 	}
 	public void TimeSlow()
