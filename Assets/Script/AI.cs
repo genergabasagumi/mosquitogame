@@ -13,8 +13,9 @@ public class AI : MonoBehaviour {
 	public float ScaleValue;
 	public Sprite DeathSprite;
 	public GameObject Player;
-	public bool Scale = true;
+	public bool Imdeath;
 	public bool NoyetAttack;
+
 	// Use this for initialization
 	void Start () {
 		InfoManager = GameObject.Find("Info");
@@ -33,7 +34,7 @@ public class AI : MonoBehaviour {
 			myPos.x *= -1;
 		if (transform.position.y > CameraPos.y || transform.position.y < -CameraPos.y )
 			myPos.y *= -1;
-		transform.position = myPos;
+		transform.position = myPos; 
 		if(!StopMoving)
 		{
 			transform.Translate (Vector2.up * (Speed) * Time.deltaTime);
@@ -55,20 +56,19 @@ public class AI : MonoBehaviour {
 				float Degree = transform.rotation.z + 90;
 				transform.Rotate(0,0,Degree);
 			}
-			if (ScaleValue > 0.01f) {
-				Scale = false;
-				//InfoManager.GetComponent<Info>().Life--;
+			if (transform.localScale.magnitude  < 1.05f) {
+				InfoManager.GetComponent<Info>().Life--;
 				DestroyObject (this.gameObject);
 			}
-			if(Scale)
+			if (transform.localScale.magnitude  > 1.05f)
 			{
-				ScaleValue += 0.005f * Time.deltaTime;
-				transform.localScale -= new Vector3(ScaleValue,ScaleValue, 0);
+
+				transform.localScale -= new Vector3(1.0f,1.0f, 0) * ScaleValue * Time.deltaTime;
 			}
 
 			//this.GetComponent<BoxCollider2D>().enabled = false;
 			//this.GetComponent<SpriteRenderer>().sortingOrder = 10;
-			if(!this.GetComponent<SpriteRenderer> ().sprite == DeathSprite)
+			if(!Imdeath)
 				this.transform.position = Vector3.MoveTowards(this.gameObject.transform.position,Player.gameObject.transform.position, 5 * Time.deltaTime);
 		}
 
@@ -79,6 +79,7 @@ public class AI : MonoBehaviour {
 	{
 		InfoManager.GetComponent<Info>().Score++;
 		StopMoving = true;
+		Imdeath = true;
 		this.GetComponent<BoxCollider2D>().enabled = false;
 		this.GetComponent<SpriteRenderer> ().sprite = DeathSprite;
 		StopAllCoroutines();

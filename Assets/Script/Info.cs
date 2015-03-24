@@ -68,7 +68,7 @@ public class Info : MonoBehaviour {
 			 DestroyAll();
 
 		}
-
+		/*
 		for(int i = Heart.Length-1; i >= 0;i--)
 		{
 			if(Life == i)
@@ -76,6 +76,16 @@ public class Info : MonoBehaviour {
 				if(Heart[i].activeSelf)
 				{
 					Heart[i].SetActive(false);
+				}
+			}
+		}*/
+		for (int i = Heart.Length - 1; i >= 0; i--) 
+		{
+			if(Life == i)
+			{
+				if(!Heart[i].activeSelf)
+				{
+					Heart[i].SetActive(true);
 				}
 			}
 		}

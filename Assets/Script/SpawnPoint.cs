@@ -56,6 +56,7 @@ public class SpawnPoint : MonoBehaviour {
 			yield return new WaitForSeconds(WaveWait);
 			if(WaveCount % 3 == 0)
 			{
+				if(SpawnCount < 20)
 				SpawnCount++;
 				if(tempSpeed < 10 )
 					tempSpeed++;
