@@ -10,14 +10,18 @@ public class AI : MonoBehaviour {
 	public GameObject Spawn;
 	public bool AttackPls;
 	public bool StopMoving;
-	private float ScaleValue;
+	public float ScaleValue;
 	public Sprite DeathSprite;
+	public GameObject Player;
+	public bool Scale = true;
+	public bool NoyetAttack;
 	// Use this for initialization
 	void Start () {
 		InfoManager = GameObject.Find("Info");
 		StartCoroutine (RandomSpeed ());
 		Spawn = GameObject.Find("SpawnPoint");
 		Speed += Spawn.GetComponent<SpawnPoint> ().tempSpeed;
+		Player = GameObject.FindGameObjectWithTag("Player");
 		StartCoroutine (AttackMode ());
 	}
 	
@@ -38,19 +42,35 @@ public class AI : MonoBehaviour {
 			else
 				transform.Rotate(Vector3.back * Time.deltaTime * RotateSpeed, Space.Self);
 		}
+
 		if (AttackPls)
 		{
 			StopMoving = true;
-			ScaleValue += 0.5f * Time.deltaTime;
-			transform.localScale += new Vector3(ScaleValue,ScaleValue, 0);
-			this.GetComponent<BoxCollider2D>().enabled = false;
-			this.GetComponent<SpriteRenderer>().sortingOrder = 10;
 
+			Vector3 moveDirection = gameObject.transform.position - Player.transform.position; 
+			if (moveDirection != Vector3.zero) 
+			{
+				float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+				transform.rotation = Quaternion.AngleAxis(angle,Vector3.forward);
+				float Degree = transform.rotation.z + 90;
+				transform.Rotate(0,0,Degree);
+			}
+			if (ScaleValue > 0.01f) {
+				Scale = false;
+				//InfoManager.GetComponent<Info>().Life--;
+				DestroyObject (this.gameObject);
+			}
+			if(Scale)
+			{
+				ScaleValue += 0.005f * Time.deltaTime;
+				transform.localScale -= new Vector3(ScaleValue,ScaleValue, 0);
+			}
+
+			//this.GetComponent<BoxCollider2D>().enabled = false;
+			//this.GetComponent<SpriteRenderer>().sortingOrder = 10;
+			this.transform.position = Vector3.MoveTowards(this.gameObject.transform.position,Player.gameObject.transform.position, 5 * Time.deltaTime);
 		}
-		if (ScaleValue > 0.3f) {
-			InfoManager.GetComponent<Info>().Life--;
-			DestroyObject (this.gameObject);
-		}
+
 
 	}
 
@@ -76,7 +96,11 @@ public class AI : MonoBehaviour {
 	IEnumerator AttackMode()
 	{
 		yield return new WaitForSeconds (5);
-		AttackPls = !AttackPls;
+		if (!InfoManager.GetComponent<Info> ().LotionUp) {
+			AttackPls = !AttackPls;
+
+		} else
+			NoyetAttack = true;
 	}
 
 }

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class SpawnPoint : MonoBehaviour {
 	public float SpawnCount;
+	public int AmountRush;
+	
 	public float SpawnStartWait;
 	public float WaveWait;
 	public float SpawnWait;
@@ -16,9 +18,10 @@ public class SpawnPoint : MonoBehaviour {
 
 	public float MinUPs;
 	public float MaxUPs;
-
 	private GameObject currentUps;
+	public bool FinishRush;
 
+	public GameObject Warning;
 	// Use this for initialization
 	void Start () {
 		MinUPs = 10.0f;
@@ -31,6 +34,10 @@ public class SpawnPoint : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+	}
+	public void RunRush()
+	{
+		StartCoroutine (MosquitoRush());
 	}
 	IEnumerator SpawnWave ()
 	{
@@ -58,7 +65,23 @@ public class SpawnPoint : MonoBehaviour {
 
 		}
 	}
-
+	IEnumerator MosquitoRush()
+	{
+		Warning.SetActive (true);
+		yield return new WaitForSeconds (2.0f);
+		Warning.SetActive (false);
+		{
+			for(int w = 0; w < AmountRush;w++)
+			{
+				SpawnPos.x = Random.Range(-CameraPos.x,CameraPos.x);
+				SpawnPos.y = Random.Range(-CameraPos.y,CameraPos.y);
+				Instantiate(Mosquito,SpawnPos,Quaternion.identity);
+				yield return new WaitForSeconds(0.1f);
+			}
+			yield return new WaitForSeconds(5.0f);
+			FinishRush = true;
+		}
+	}
 	IEnumerator PowerUps()
 	{
 		while(true)
