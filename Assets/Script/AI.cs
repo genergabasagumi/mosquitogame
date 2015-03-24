@@ -68,7 +68,8 @@ public class AI : MonoBehaviour {
 
 			//this.GetComponent<BoxCollider2D>().enabled = false;
 			//this.GetComponent<SpriteRenderer>().sortingOrder = 10;
-			this.transform.position = Vector3.MoveTowards(this.gameObject.transform.position,Player.gameObject.transform.position, 5 * Time.deltaTime);
+			if(!this.GetComponent<SpriteRenderer> ().sprite == DeathSprite)
+				this.transform.position = Vector3.MoveTowards(this.gameObject.transform.position,Player.gameObject.transform.position, 5 * Time.deltaTime);
 		}
 
 
