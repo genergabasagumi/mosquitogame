@@ -40,7 +40,8 @@ public class SpawnPoint : MonoBehaviour {
 	void Update () {
 		Mos = GameObject.FindGameObjectsWithTag("Enemy");
 		if (FinishRush) {
-			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)
+
+			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended && Mos.Length == 0)
 			{
 				StartCoroutine ("PowerUps");
 				StartCoroutine("SpawnWave");
