@@ -40,8 +40,11 @@ public class SpawnPoint : MonoBehaviour {
 	void Update () {
 		Mos = GameObject.FindGameObjectsWithTag("Enemy");
 		if (FinishRush) {
-
-			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended && Mos.Length == 0)
+			if(!Tap.activeSelf && Mos.Length == 0)
+			{
+				Tap.SetActive(true);
+			}
+			else if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)
 			{
 				StartCoroutine ("PowerUps");
 				StartCoroutine("SpawnWave");
@@ -76,10 +79,7 @@ public class SpawnPoint : MonoBehaviour {
 					tempSpeed++;
 				if(SpawnWait > 0.1f)
 					SpawnWait -=0.2f;
-				if(!Tap.activeSelf)
-				{
-					Tap.SetActive(true);
-				}
+
 				StartCoroutine("MosquitoRush");
 				StopCoroutine ("PowerUps");
 				StopCoroutine("SpawnWave");	

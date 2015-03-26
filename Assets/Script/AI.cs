@@ -30,10 +30,12 @@ public class AI : MonoBehaviour {
 	void Update () {
 		Vector3 CameraPos = Camera.main.ScreenToWorldPoint (new Vector3 (Screen.width, Screen.height, 0));
 		Vector3 myPos = transform.position;
-		if (transform.position.x > CameraPos.x || transform.position.x < -CameraPos.x )
+		if (transform.position.x > CameraPos.x + 0.5f || transform.position.x < -CameraPos.x - 0.5f ) {
 			myPos.x *= -1;
-		if (transform.position.y > CameraPos.y || transform.position.y < -CameraPos.y )
+		}
+		if (transform.position.y > CameraPos.y + 0.5f|| transform.position.y < -CameraPos.y - 0.5f	) {
 			myPos.y *= -1;
+		}
 		transform.position = myPos; 
 		if(!StopMoving)
 		{
