@@ -57,7 +57,7 @@ public class AI : MonoBehaviour {
 				transform.Rotate(0,0,Degree);
 			}
 			if (transform.localScale.magnitude  < 1.05f) {
-				InfoManager.GetComponent<Info>().Life--;
+				//InfoManager.GetComponent<Info>().Life--;
 				DestroyObject (this.gameObject);
 			}
 			if (transform.localScale.magnitude  > 1.05f)

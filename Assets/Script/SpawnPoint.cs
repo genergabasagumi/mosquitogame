@@ -22,22 +22,35 @@ public class SpawnPoint : MonoBehaviour {
 	public bool FinishRush;
 
 	public GameObject Warning;
+	public GameObject[] Mos;
+	public GameObject Tap;
 	// Use this for initialization
 	void Start () {
 		MinUPs = 10.0f;
 		MaxUPs = 20.0f;
-		StartCoroutine (SpawnWave ());
-		StartCoroutine (PowerUps ());
+
+		StartCoroutine ("SpawnWave");
+		StartCoroutine ("PowerUps");
 		CameraPos = Camera.main.ScreenToWorldPoint (new Vector2 (Screen.width, Screen.height));
+
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	}
-	public void RunRush()
-	{
-		StartCoroutine (MosquitoRush());
+		Mos = GameObject.FindGameObjectsWithTag("Enemy");
+		if (FinishRush) {
+			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended)
+			{
+				StartCoroutine ("PowerUps");
+				StartCoroutine("SpawnWave");
+				if(Tap.activeSelf)
+				{
+					Tap.SetActive(false);
+				}
+				FinishRush = false;
+			}
+		}
 	}
 	IEnumerator SpawnWave ()
 	{
@@ -54,14 +67,22 @@ public class SpawnPoint : MonoBehaviour {
 			}
 			WaveCount++;
 			yield return new WaitForSeconds(WaveWait);
-			if(WaveCount % 3 == 0)
+			if(WaveCount % 5 == 0)
 			{
-				if(SpawnCount < 20)
+				if(SpawnCount < 15)
 				SpawnCount++;
 				if(tempSpeed < 10 )
 					tempSpeed++;
 				if(SpawnWait > 0.1f)
 					SpawnWait -=0.2f;
+				if(!Tap.activeSelf)
+				{
+					Tap.SetActive(true);
+				}
+				StartCoroutine("MosquitoRush");
+				StopCoroutine ("PowerUps");
+				StopCoroutine("SpawnWave");	
+
 			}
 
 		}
@@ -71,17 +92,16 @@ public class SpawnPoint : MonoBehaviour {
 		Warning.SetActive (true);
 		yield return new WaitForSeconds (2.0f);
 		Warning.SetActive (false);
+
+		for(int w = 0; w < AmountRush;w++)
 		{
-			for(int w = 0; w < AmountRush;w++)
-			{
-				SpawnPos.x = Random.Range(-CameraPos.x,CameraPos.x);
-				SpawnPos.y = Random.Range(-CameraPos.y,CameraPos.y);
-				Instantiate(Mosquito,SpawnPos,Quaternion.identity);
-				yield return new WaitForSeconds(0.1f);
-			}
-			yield return new WaitForSeconds(5.0f);
-			FinishRush = true;
+			SpawnPos.x = Random.Range(-CameraPos.x,CameraPos.x);
+			SpawnPos.y = Random.Range(-CameraPos.y,CameraPos.y);
+			Instantiate(Mosquito,SpawnPos,Quaternion.identity);
+			yield return new WaitForSeconds(0.1f);
 		}
+		yield return new WaitForSeconds(5.0f);
+		FinishRush = true;
 	}
 	IEnumerator PowerUps()
 	{
