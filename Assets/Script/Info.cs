@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 public class Info : MonoBehaviour {
 	public int Score;
 	public int Life;
@@ -29,10 +30,9 @@ public class Info : MonoBehaviour {
 	{
 		highScore = PlayerPrefs.GetInt("High Score");
 		highScoreText.text = highScore.ToString();
-
+		Advertisement.Initialize ("26936", true);
 	}
 	void Start () {
-
 	}
 	
 	// Update is called once per frame
@@ -45,7 +45,7 @@ public class Info : MonoBehaviour {
 
 		if(Life < 0)
 		{
-			highScore = PlayerPrefs.GetInt("High Score");
+			//highScore = PlayerPrefs.GetInt("High Score");
 
 			if(highScore < Score)
 			{
@@ -56,12 +56,14 @@ public class Info : MonoBehaviour {
 
 			if(!EndWindow.activeSelf)
 			{
+				DestroyObject(SpawnPoint);
+				DestroyAll();
+				StartCoroutine("Ads");
 				EndWindow.SetActive(true);
 			}
 			if(InGame.activeSelf)
 				InGame.SetActive(false);
-			DestroyObject(SpawnPoint);
-			 DestroyAll();
+
 
 		}
 		/*
@@ -124,6 +126,13 @@ public class Info : MonoBehaviour {
 				Mos[q].GetComponent<AI>().AttackPls = true;
 			}
 			
+		}
+	}
+	IEnumerator Ads()
+	{
+		yield return new WaitForSeconds (0.5f);
+		if(Advertisement.isReady()){
+			Advertisement.Show();
 		}
 	}
 }

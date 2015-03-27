@@ -58,8 +58,9 @@ public class AI : MonoBehaviour {
 				float Degree = transform.rotation.z + 90;
 				transform.Rotate(0,0,Degree);
 			}
-			if (transform.localScale.magnitude  < 1.05f) {
-				//InfoManager.GetComponent<Info>().Life--;
+			if(Vector3.Distance(this.transform.position,Player.transform.position) < 0.5f)
+			{
+				InfoManager.GetComponent<Info>().Life--;
 				DestroyObject (this.gameObject);
 			}
 			if (transform.localScale.magnitude  > 1.05f)

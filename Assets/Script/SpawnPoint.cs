@@ -32,8 +32,6 @@ public class SpawnPoint : MonoBehaviour {
 		StartCoroutine ("SpawnWave");
 		StartCoroutine ("PowerUps");
 		CameraPos = Camera.main.ScreenToWorldPoint (new Vector2 (Screen.width, Screen.height));
-
-
 	}
 	
 	// Update is called once per frame
