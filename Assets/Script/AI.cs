@@ -3,8 +3,10 @@ using System.Collections;
 
 public class AI : MonoBehaviour {
 	public GameObject InfoManager;
+
 	private float RotateSpeed;
 	private float RandomWaitTime;
+
 	public float Speed;
 	public bool Rot;
 	public GameObject Spawn;

@@ -10,17 +10,18 @@ public class SpawnPoint : MonoBehaviour {
 	public float SpawnWait;
 	public float WaveCount;
 	public GameObject Mosquito;
-	private Vector3 CameraPos;
 	public float tempSpeed;
+
+	private Vector3 CameraPos;
 	private Vector2 SpawnPos;
 
 	public GameObject[] Ups;
-
 	public float MinUPs;
 	public float MaxUPs;
-	private GameObject currentUps;
-	public bool FinishRush;
 
+	private GameObject currentUps;
+
+	public bool FinishRush;
 	public GameObject Warning;
 	public GameObject[] Mos;
 	public GameObject Tap;
